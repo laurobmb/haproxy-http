@@ -1,0 +1,44 @@
+---
+# tasks file for haproxy
+- name: install haproxy
+  yum:
+    name: haproxy
+    state: present
+  notify: restart haproxy
+
+- name: install keepalived
+  yum:
+    name: keepalived
+    state: present
+  notify: restart keepalived
+
+- name: copy keepalived
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+  notify: restart keepalived
+
+- name: copy haproxy.cfg
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+  notify: restart haproxy
+
+- name: Allow firewalld
+  firewalld:
+    service: "{{item}}"
+    permanent: yes
+    state: enabled
+    zone: public
+    immediate: yes
+  loop:
+  - https
+  - http
+
+- name: Allow firewalld to stats
+  firewalld:
+    port: 9000/tcp
+    permanent: yes
+    state: enabled
+    zone: public
+    immediate: yes

@@ -1,0 +1,7 @@
+---
+- name: Register maquinas
+  hosts: haproxy
+  roles:
+    - role: haproxy
+      when: "ansible_os_family == 'RedHat'"
+      tags: install_haproxy
