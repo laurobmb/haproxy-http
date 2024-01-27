@@ -11,6 +11,8 @@
         <li><strong>Nome do Host:</strong> {{ ansible_hostname }}</li>
         <li><strong>Endereço IP:</strong> {{ ansible_default_ipv4.address }}</li>
         <li><strong>Sistema Operacional:</strong> {{ ansible_distribution }} {{ ansible_distribution_version }}</li>
+        <li><strong>MACaddress:</strong> {{ ansible_default_ipv4.macaddress }}</li>
+        <li><strong>Interface:</strong> {{ ansible_default_ipv4.interface }}</li>
         <!-- Adicione outras informações que você deseja exibir aqui -->
     </ul>
 </body>
