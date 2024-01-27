@@ -1,7 +1,7 @@
 ---
 - name: Register maquinas
   hosts: httpd
-  gather_facts: false
+  gather_facts: true
   roles:
     - role: httpd
       tags: install_httpd

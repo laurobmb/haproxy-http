@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Servidor</title>
+</head>
+<body>
+    <h1>Informações do Servidor</h1>
+    <ul>
+        <li><strong>Nome do Host:</strong> {{ ansible_hostname }}</li>
+        <li><strong>Endereço IP:</strong> {{ ansible_default_ipv4.address }}</li>
+        <li><strong>Sistema Operacional:</strong> {{ ansible_distribution }} {{ ansible_distribution_version }}</li>
+        <!-- Adicione outras informações que você deseja exibir aqui -->
+    </ul>
+</body>
+</html>

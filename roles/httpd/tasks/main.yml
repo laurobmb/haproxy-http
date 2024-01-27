@@ -31,7 +31,7 @@
   - http
 
 - name: Copy index
-  ansible.builtin.copy:
-    content: "{{ ansible_hostname }}"
+  ansible.builtin.template:
+    src: index.html.j2
     dest: /var/www/html/index.html
   notify: restart httpd
