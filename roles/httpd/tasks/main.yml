@@ -13,15 +13,25 @@
   ansible.builtin.set_fact:
     ansible_hostname: "{{ ansible_hostname.stdout }}"
 
-- name: install httpd
-  yum:
-    name: '{{__apache_packages}}'
+- name: Install httpd
+  ansible.builtin.yum:
+    name: '{{ __apache_packages }}'
     state: present
   notify: restart httpd
 
-- name: allow firewalld
-  firewalld:
-    service: "{{item}}"
+- name: Install common packages
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - vim
+    - net-tools
+    - bind-utils
+    - firewalld
+
+- name: Allow firewalld
+  ansible.posix.firewalld:
+    service: "{{ item }}"
     permanent: yes
     state: enabled
     zone: public

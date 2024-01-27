@@ -1,6 +1,16 @@
 ---
 - name: Register maquinas
   hosts: haproxy
+  pre_tasks:
+    - name: Install common packages
+      ansible.builtin.yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - vim
+        - net-tools
+        - bind-utils
+        - firewalld
   roles:
     - role: haproxy
       when: "ansible_os_family == 'RedHat'"

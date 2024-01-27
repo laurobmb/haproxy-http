@@ -2,6 +2,16 @@
 - name: Register maquinas
   hosts: httpd
   gather_facts: true
+  pre_tasks:
+    - name: Install common packages
+      ansible.builtin.yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - vim
+        - net-tools
+        - bind-utils
+        - firewalld
   roles:
     - role: httpd
       tags: install_httpd
