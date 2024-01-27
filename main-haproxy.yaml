@@ -1,6 +1,7 @@
 ---
 - name: Register maquinas
   hosts: haproxy
+  gather_facts: false
   pre_tasks:
     - name: Install common packages
       ansible.builtin.yum:
@@ -11,6 +12,14 @@
         - net-tools
         - bind-utils
         - firewalld
+    - name: Coletando fatos para gerar relatorio
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - "!min"
+          - network
+          - "!facter"
+          - processor
   roles:
     - role: haproxy
       when: "ansible_os_family == 'RedHat'"

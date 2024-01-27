@@ -20,7 +20,7 @@
 
 - name: copy haproxy.cfg
   template:
-    src: haproxy.cfg.j2
+    src: haproxy.cfg-2.j2
     dest: /etc/haproxy/haproxy.cfg
   notify: restart haproxy
 
@@ -42,3 +42,13 @@
     state: enabled
     zone: public
     immediate: yes
+
+- name: Adicionar porta TCPs
+  seport:
+    ports: "{{ item }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  loop:
+    - 6443
+    - 22623

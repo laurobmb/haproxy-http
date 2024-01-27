@@ -19,29 +19,20 @@
     state: present
   notify: restart httpd
 
-- name: Install common packages
-  ansible.builtin.yum:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - vim
-    - net-tools
-    - bind-utils
-    - firewalld
-
 - name: Allow firewalld
   ansible.posix.firewalld:
     service: "{{ item }}"
-    permanent: yes
+    permanent: true
     state: enabled
     zone: public
-    immediate: yes
+    immediate: true
   loop:
-  - https
-  - http
+    - https
+    - http
 
 - name: Copy index
   ansible.builtin.template:
     src: index.html.j2
     dest: /var/www/html/index.html
+    mode: '0644'
   notify: restart httpd

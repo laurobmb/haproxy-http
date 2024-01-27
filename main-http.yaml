@@ -1,7 +1,7 @@
 ---
 - name: Register maquinas
   hosts: httpd
-  gather_facts: true
+  gather_facts: false
   pre_tasks:
     - name: Install common packages
       ansible.builtin.yum:
@@ -12,6 +12,14 @@
         - net-tools
         - bind-utils
         - firewalld
+    - name: Coletando fatos
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - "!min"
+          - network
+          - "!facter"
+          - processor
   roles:
     - role: httpd
       tags: install_httpd

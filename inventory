@@ -4,3 +4,4 @@ f39_temp_005 ansible_host=192.168.100.13
 [httpd]
 rhel93_temp_001 ansible_host=192.168.100.19
 rhel93_temp_002 ansible_host=192.168.100.15
+temp_rhel93 ansible_host=192.168.100.18
