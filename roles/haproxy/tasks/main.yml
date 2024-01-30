@@ -1,31 +1,31 @@
 ---
 # tasks file for haproxy
 - name: install haproxy
-  yum:
+  ansible.builtin.yum:
     name: haproxy
     state: present
   notify: restart haproxy
 
 - name: install keepalived
-  yum:
+  ansible.builtin.yum:
     name: keepalived
     state: present
   notify: restart keepalived
 
 - name: copy keepalived
-  template:
+  ansible.builtin.template:
     src: keepalived.conf.j2
     dest: /etc/keepalived/keepalived.conf
   notify: restart keepalived
 
 - name: copy haproxy.cfg
-  template:
+  ansible.builtin.template:
     src: haproxy.cfg-2.j2
     dest: /etc/haproxy/haproxy.cfg
   notify: restart haproxy
 
 - name: Allow firewalld
-  firewalld:
+  ansible.posix.firewalld:
     service: "{{item}}"
     permanent: yes
     state: enabled
@@ -36,7 +36,7 @@
   - http
 
 - name: Allow firewalld to stats
-  firewalld:
+  ansible.posix.firewalld:
     port: 9000/tcp
     permanent: yes
     state: enabled
@@ -44,7 +44,7 @@
     immediate: yes
 
 - name: Adicionar porta TCPs
-  seport:
+  community.general.seport:
     ports: "{{ item }}"
     proto: tcp
     setype: http_port_t
@@ -52,3 +52,9 @@
   loop:
     - 6443
     - 22623
+
+- name: restart haproxy and ensure enable
+  ansible.builtin.systemd:
+    name: haproxy
+    state: restarted
+    enabled: true
