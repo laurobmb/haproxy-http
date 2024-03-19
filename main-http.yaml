@@ -1,6 +1,6 @@
 ---
 - name: Register maquinas
-  hosts: httpd
+  hosts: web_servers
   gather_facts: false
   pre_tasks:
     - name: Install common packages

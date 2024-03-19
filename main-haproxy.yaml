@@ -1,6 +1,6 @@
 ---
 - name: Register maquinas
-  hosts: haproxy
+  hosts: haproxys
   gather_facts: false
   pre_tasks:
     - name: Install common packages
