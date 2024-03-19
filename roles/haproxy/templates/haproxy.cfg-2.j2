@@ -85,25 +85,25 @@ frontend insecure
 #---------------------------------------------------------------------
 
 backend controlplaneapi
-    balance source
+    balance roundrobin
 {% for ip in groups['web_servers'] %}
     server httpd{{loop.index}} {{hostvars[ip].ansible_host}}:6443 check
 {% endfor %}    
 
 backend controlplaneapiinternal
-    balance source
+    balance roundrobin
 {% for ip in groups['web_servers'] %}
     server httpd{{loop.index}} {{hostvars[ip].ansible_host}}:22623 check
 {% endfor %}    
 
 backend secure
-    balance source
+    balance roundrobin
 {% for ip in groups['web_servers'] %}
     server httpd{{loop.index}} {{hostvars[ip].ansible_host}}:443 check
 {% endfor %}    
 
 backend insecure
-    balance source
+    balance roundrobin
 {% for ip in groups['web_servers'] %}
     server httpd{{loop.index}} {{hostvars[ip].ansible_host}}:80 check
 {% endfor %}    
