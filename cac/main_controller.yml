@@ -1,0 +1,102 @@
+---
+
+- name: Install Project HAPROXY
+  hosts: localhost
+  gather_facts: false
+
+  vars_files:
+    - vault.yml
+
+  vars:
+    controller_username: admin
+    controller_password: r3dh4t1!
+    controller_host: https://controller01.localnet.local
+    validate_certs: false
+
+    description_project: "CaC install haproxy project"
+    config_aap_estado: present
+    organization: Devops
+    project_inventory: haproxy_project_inventory
+
+    project_git:
+      name: haproxy-http
+      url: https://github.com/laurobmb/haproxy-http.git
+      # credential: ''
+      branch: main
+      organization: "{{ organization }}"
+
+    project_hosts:
+      - name: web2.localnet.local
+        enabled: true
+        ipv4: 192.168.184.13
+        group: web_servers
+        inventory: "{{ project_inventory }}"
+
+      - name: web1.localnet.local
+        enabled: true
+        ipv4: 192.168.184.12
+        group: web_servers
+        inventory: "{{ project_inventory }}"
+
+      - name: haproxy.localnet.local
+        enabled: true
+        ipv4: 192.168.184.14
+        group: haproxys
+        inventory: "{{ project_inventory }}"
+
+    project_execution_environments:
+
+      - name: ee-openssl-rhel8
+        image: quay.io/lagomes/ee-openssl-rhel8:v6
+        pull: missing
+        credential: ''
+
+      - name: ee-openvpn-rhel9
+        image: quay.io/lagomes/ee-openvpn:v1
+        pull: always
+        credential: 'AcessoHUB'
+
+    project_job_templates:
+
+      - name: main-haproxy
+        inventory: "{{ project_inventory }}"
+        project: "{{ project_git.name }}"
+        playbook: main-haproxy.yaml
+        credentials: AcessoHosts
+        execution_environment: ee-openssl-rhel8
+
+      - name: main-http
+        inventory: "{{ project_inventory }}"
+        project: "{{ project_git.name }}"
+        playbook: main-http.yaml
+        credentials: AcessoHosts
+        execution_environment: ee-openssl-rhel8
+
+  tasks:
+
+    - name: Create Organizatrion
+      ansible.builtin.import_tasks: playbooks/projeto_haproxy_organization.yml
+
+    - name: Create inventory
+      ansible.builtin.import_tasks: playbooks/projeto_haproxy_inventories.yml
+
+    - name: Create hosts
+      ansible.builtin.import_tasks: playbooks/projeto_haproxy_hosts.yml
+
+    - name: Create groups
+      ansible.builtin.import_tasks: playbooks/projeto_haproxy_groups.yml
+
+    - name: Create credentials
+      ansible.builtin.import_tasks: playbooks/projeto_haproxy_credentials.yml
+
+    - name: Create Executions Environment
+      ansible.builtin.import_tasks: playbooks/projeto_haproxy_execution_environments.yml
+
+    - name: Create Project
+      ansible.builtin.import_tasks: playbooks/projeto_haproxy_projects.yml
+
+    - name: Create job templates
+      ansible.builtin.import_tasks: playbooks/projeto_haproxy_job_templates.yml
+
+    - name: Create Workflow
+      ansible.builtin.import_tasks: playbooks/projeto_haproxy_workflow_job_templates.yml

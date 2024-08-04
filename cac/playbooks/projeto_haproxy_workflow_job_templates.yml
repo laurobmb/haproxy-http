@@ -1,0 +1,74 @@
+---
+
+- name: Create job template main-haproxy
+  ansible.controller.workflow_job_template:
+    controller_username: "{{ controller_username }}"
+    controller_password: "{{ controller_password }}"
+    controller_host: "{{ controller_host }}"
+    validate_certs: "{{ validate_certs }}"
+    organization: "{{ organization }}"
+    description: "{{ description_project }}"
+    state: "{{ config_aap_estado }}"
+
+    name: HAPROXY WorkFloW
+    extra_vars:
+      chave: valor
+    survey_enabled: false
+    allow_simultaneous: false
+    ask_variables_on_launch: false
+    inventory: haproxy_project_inventory
+    limit:
+    scm_branch:
+    ask_inventory_on_launch: false
+    ask_scm_branch_on_launch: false
+    ask_limit_on_launch: false
+#    webhook_service: ''
+    webhook_credential:
+#    organization:
+#      name: "{{ organization }}"
+    workflow_nodes:
+      - identifier: haproxy-http
+        unified_job_template:
+          organization:
+            name: "{{ organization }}"
+          name: haproxy-http
+          type: project
+        related:
+          failure_nodes: []
+          always_nodes: []
+          credentials: []
+          success_nodes:
+            - identifier: main-haproxy
+
+      - identifier: main-haproxy
+        unified_job_template:
+          organization:
+            name: "{{ organization }}"
+          name: main-haproxy
+          type: job_template
+        inventory:
+          name: haproxy_project_inventory
+          organization:
+            name: "{{ organization }}"
+        related:
+          success_nodes:
+            - identifier: main-http
+          failure_nodes: []
+          credentials: []
+          always_nodes: []
+
+      - identifier: main-http
+        unified_job_template:
+          organization:
+            name: "{{ organization }}"
+          name: main-http
+          type: job_template
+        inventory:
+          name: haproxy_project_inventory
+          organization:
+            name: "{{ organization }}"
+        related:
+          failure_nodes: []
+          always_nodes: []
+          credentials: []
+          success_nodes: []

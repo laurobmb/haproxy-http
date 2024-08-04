@@ -1,0 +1,29 @@
+---
+- name: Install Project HAPROXY
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create a new token using username/password
+      ansible.controller.token:
+        description: 'Token de acesso para o EDA'
+        scope: "write"
+        state: present
+        controller_username: admin
+        controller_password: r3dh4t1!
+        controller_host: https://controller01.localnet.local
+        validate_certs: false
+      register: eda_token
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "token: {{ eda_token.ansible_facts.controller_token.token }}"
+
+    - name: Create eda user token
+      infra.eda_configuration.user_token:
+        name: integration_token
+        description: Admin token for accessing AAP
+        token: eda_token.ansible_facts.controller_token.token
+        eda_host: https://eda.localnet.local
+        eda_username: admin
+        eda_password: r3dh4t1!
+        validate_certs: false

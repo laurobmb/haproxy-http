@@ -1,0 +1,26 @@
+---
+- name: url_check Source Example
+  hosts: all
+  sources:
+    - name: check web server
+      ansible.eda.url_check:
+        urls:
+          - 'http://web.localnet.local/'
+        delay: 40
+        verify_ssl: false
+
+  rules:
+
+    - name: If the service is down, run a playbook to fix it
+      condition:
+        any:
+          - event.url_check.status != "up"
+          - event.url_check.status_code != 200
+      action:
+        run_job_template:
+          name: Automation - Instalacao do HAPROXY
+          organization: Default
+#          job_args:
+#            extra_vars:
+#               message: From EDA url_check source
+#               sleep: 1

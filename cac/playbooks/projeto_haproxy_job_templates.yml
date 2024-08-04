@@ -1,0 +1,20 @@
+---
+
+- name: Create job template main-haproxy
+  ansible.controller.job_template:
+    controller_username: "{{ controller_username }}"
+    controller_password: "{{ controller_password }}"
+    controller_host: "{{ controller_host }}"
+    validate_certs: "{{ validate_certs }}"
+    organization: "{{ organization }}"
+    description: "{{ description_project }}"
+    state: "{{ config_aap_estado }}"
+    name: "{{ item.name }}"
+    job_type: run
+    inventory: "{{ item.inventory }}"
+    project: "{{ item.project }}"
+    playbook: "{{ item.playbook }}"
+    credentials:
+      - "{{ item.credentials }}"
+    execution_environment: "{{ item.execution_environment }}"
+  loop: "{{ project_job_templates }}"

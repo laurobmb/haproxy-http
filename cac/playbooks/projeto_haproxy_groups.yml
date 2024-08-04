@@ -1,0 +1,17 @@
+---
+
+- name: Create groups
+  ansible.controller.group:
+    controller_username: "{{ controller_username }}"
+    controller_password: "{{ controller_password }}"
+    controller_host: "{{ controller_host }}"
+    validate_certs: "{{ validate_certs }}"
+    description: "{{ description_project }}"
+    state: "{{ config_aap_estado }}"
+    name: "{{ item.group }}"
+    inventory: "{{ item.inventory }}"
+    preserve_existing_hosts: true
+    hosts:
+      - "{{ item.name }}"
+  loop: "{{ project_hosts }}"
+

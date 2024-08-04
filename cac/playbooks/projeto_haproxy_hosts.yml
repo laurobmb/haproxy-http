@@ -1,0 +1,17 @@
+---
+
+- name: Create hosts
+  ansible.controller.host:
+    controller_username: "{{ controller_username }}"
+    controller_password: "{{ controller_password }}"
+    controller_host: "{{ controller_host }}"
+    validate_certs: "{{ validate_certs }}"
+    description: "{{ description_project }}"
+    state: "{{ config_aap_estado }}"
+    name: "{{ item.name }}"
+    inventory: "{{ item.inventory }}"
+    enabled: "{{ item.enabled }}"
+    variables:
+      example_var: 123
+      ansible_host: "{{ item.ipv4 }}"
+  loop: "{{ project_hosts }}"

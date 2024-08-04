@@ -1,0 +1,17 @@
+---
+controller_groups:
+
+  - name: haproxys
+    organization: Devops
+    description: "DevOps and Automation Team"
+    inventory: haproxy_project_inventory
+    hosts:
+      - "haproxy.localnet.local"
+  
+  - name: web_servers
+    organization: Devops
+    description: "DevOps and Automation Team"
+    inventory: haproxy_project_inventory
+    hosts:
+      - "web2.localnet.local"
+      - "web1.localnet.local"

@@ -1,0 +1,23 @@
+---
+controller_templates:
+
+  - name: main-haproxy
+    job_type: run
+    inventory: haproxy_project_inventory
+    project: haproxy-http
+    playbook: main-haproxy.yaml
+    credentials:
+      - AcessoHosts
+    description: "DevOps and Automation Team"
+    execution_environment: ee-openssl-rhel8
+
+  - name: main-http
+    job_type: run
+    inventory: haproxy_project_inventory
+    project: haproxy-http
+    playbook: main-http.yaml
+    credentials:
+      - AcessoHosts
+    description: "DevOps and Automation Team"
+    execution_environment: ee-openssl-rhel8
+

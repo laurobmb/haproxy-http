@@ -1,0 +1,13 @@
+---
+controller_execution_environments:
+  - name: ee-openssl-rhel8
+    organization: Devops
+    description: "DevOps and Automation Team"
+    state: present
+    #image: controller.localnet.local:8444/ee-openssl-rhel8:v6
+    image: quay.io/lagomes/ee-openssl-rhel8:v6
+#    pull: missing
+#    credential: AcessoHUB
+
+
+

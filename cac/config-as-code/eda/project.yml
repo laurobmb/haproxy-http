@@ -1,0 +1,10 @@
+---
+infra.eda_configuration.project:
+  - name: my_project
+    description: my awesome project
+    url: https://github.com/ansible/ansible-rulebook.git
+    credential: test_token
+    state: present
+    eda_host: eda.example.com
+    eda_username: admin
+    eda_password: Sup3r53cr3t

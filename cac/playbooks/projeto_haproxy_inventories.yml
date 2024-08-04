@@ -1,0 +1,12 @@
+---
+
+- name: Create haproxy_project_inventory
+  ansible.controller.inventory:
+    controller_username: "{{ controller_username }}"
+    controller_password: "{{ controller_password }}"
+    controller_host: "{{ controller_host }}"
+    validate_certs: "{{ validate_certs }}"
+    organization: "{{ organization }}"
+    description: "{{ description_project }}"
+    state: "{{ config_aap_estado }}"
+    name: "{{ project_inventory }}"

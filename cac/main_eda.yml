@@ -1,0 +1,6 @@
+---
+
+- name: Install Project HAPROXY
+  hosts: localhost
+  gather_facts: false
+
