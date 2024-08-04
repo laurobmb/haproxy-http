@@ -5,6 +5,7 @@ infra.eda_configuration.project:
     url: https://github.com/ansible/ansible-rulebook.git
     credential: test_token
     state: present
-    eda_host: eda.example.com
-    eda_username: admin
-    eda_password: Sup3r53cr3t
+    eda_host: "{{ eda_host }}"
+    eda_username: "{{ eda_username}}"
+    eda_password: "{{ eda_password }}"
+    validate_certs: "{{ validate_certs }}"

@@ -1,5 +1,0 @@
----
-controller_inventories:
-  - name: haproxy_project_inventory
-    organization: Devops
-    description: "DevOps and Automation Team"
