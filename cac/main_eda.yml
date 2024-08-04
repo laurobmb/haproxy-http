@@ -20,7 +20,7 @@
 
     project_rulebook_activation:
       - name: CheckWebServer
-        rulebook: playbooks/rulebook-check-webserver.yml
+        rulebook: rulebook-check-webserver.yml
         decision_environment: Default Decision Environment
         enabled: true
 

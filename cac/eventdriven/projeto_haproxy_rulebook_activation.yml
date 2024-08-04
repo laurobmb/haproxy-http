@@ -6,7 +6,7 @@
     eda_username: "{{ eda_username }}"
     eda_password: "{{ eda_password }}"
     validate_certs: "{{ validate_certs }}"
-
+    restart_policy: always
     name: "{{ item.name }}"
     description: "{{ description_project }}"
     project: "{{ project_git.name }}"
