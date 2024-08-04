@@ -1,0 +1,21 @@
+---
+
+- name: Create eda rulebook activation
+  infra.eda_configuration.rulebook_activation:
+    eda_host: "{{ eda_host }}"
+    eda_username: "{{ eda_username }}"
+    eda_password: "{{ eda_password }}"
+    validate_certs: "{{ validate_certs }}"
+
+    name: "{{ item.name }}"
+    description: "{{ description_project }}"
+    project: "{{ project_git.name }}"
+    rulebook: "{{ item.rulebook }}"
+    decision_environment: "{{ item.decision_environment }}"
+    extra_vars:
+      provider: github
+      repo_url: https://github.com/ansible/ansible-rulebook.git
+    enabled: "{{ item.enabled }}"
+    awx_token: "{{ project_git.token }}"
+    state: "{{ config_eda_estado }}"
+  loop: "{{ project_rulebook_activation }}"

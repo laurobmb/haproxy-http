@@ -15,12 +15,19 @@
     project_git:
       name: haproxy-http
       url: https://github.com/laurobmb/haproxy-http.git
-      credential: 'integration_token'
+      token: 'integration_token'
       branch: main
-      organization: "{{ organization }}"
+
+    project_rulebook_activation:
+      - name: CheckWebServer
+        rulebook: playbooks/rulebook-check-webserver.yml
+        decision_environment: Default Decision Environment
+        enabled: true
 
   tasks:
 
     - name: Create Project
       ansible.builtin.import_tasks: eventdriven/projeto_haproxy_project.yml
 
+    - name: Create Rulebook
+      ansible.builtin.import_tasks: eventdriven/projeto_haproxy_rulebook_activation.yml
