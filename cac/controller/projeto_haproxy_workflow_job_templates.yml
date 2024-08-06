@@ -10,7 +10,7 @@
     description: "{{ description_project }}"
     state: "{{ config_aap_estado }}"
 
-    name: HAPROXY WorkFloW
+    name: Automation - Install HAPROXY and HTTPD
     extra_vars:
       chave: valor
     survey_enabled: false

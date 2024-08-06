@@ -19,8 +19,23 @@
       branch: main
 
     project_rulebook_activation:
-      - name: CheckWebServer
+      - name: URL_CHECK webservers
         rulebook: rulebook-check-webserver.yml
+        decision_environment: Default Decision Environment
+        enabled: true
+
+      - name: Install HAPROXY
+        rulebook: rulebook-reinstall-haproxy.yml
+        decision_environment: Default Decision Environment
+        enabled: true
+
+      - name: Reinstall Project
+        rulebook: rulebook-reinstall-project.yml
+        decision_environment: Default Decision Environment
+        enabled: true
+
+      - name: Install WebServers
+        rulebook: rulebook-reinstall-webservers.yml
         decision_environment: Default Decision Environment
         enabled: true
 

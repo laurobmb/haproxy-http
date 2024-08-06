@@ -1,5 +1,5 @@
 ---
-- name: Ansible template is cool
+- name: Install HAPROXY
   hosts: all
   sources:
     - ansible.eda.webhook:
@@ -10,5 +10,5 @@
       condition: event.payload.message == "Ansible template is cool"
       action:
         run_job_template:
-          name: Automation - Check Webpage
-          organization: "Default"
+          name: main-haproxy
+          organization: Devops

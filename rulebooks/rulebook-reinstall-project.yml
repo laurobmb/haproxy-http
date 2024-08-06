@@ -1,5 +1,5 @@
 ---
-- name: Ansible workflow is cool
+- name: Reinstall Project
   hosts: all
   sources:
     - ansible.eda.webhook:
@@ -11,4 +11,4 @@
       action:
         run_workflow_template:
           name: Automation - Install HAPROXY and HTTPD
-          organization: "Default"
+          organization: Devops
