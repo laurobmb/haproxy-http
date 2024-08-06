@@ -11,6 +11,10 @@
     validate_certs: "{{ validate_certs }}"
   register: edaproject
 
+- name: Waiting for sync
+  ansible.builtin.wait_for:
+    timeout: 5
+
 - name: Sync project on EDA
   infra.eda_configuration.project_sync:
     name: "{{ project_git.name }}"

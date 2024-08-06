@@ -1,3 +1,5 @@
+# curl -H 'Content-Type: application/json' -d "{\"message\": \"install webservers is cool\"}" eda.localnet.local:5004
+
 ---
 - name: Install WebServers
   hosts: all
@@ -7,7 +9,7 @@
         port: 5003
   rules:
     - name: Say Hello 2
-      condition: event.payload.message == "Ansible template is cool"
+      condition: event.payload.message == "install webservers is cool"
       action:
         run_job_template:
           name: main-http

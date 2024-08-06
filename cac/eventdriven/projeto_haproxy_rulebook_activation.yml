@@ -17,5 +17,5 @@
       repo_url: https://github.com/ansible/ansible-rulebook.git
     enabled: "{{ item.enabled }}"
     awx_token: "{{ project_git.token }}"
-    state: "{{ config_eda_estado }}"
+    state: "{{ item.state }}"
   loop: "{{ project_rulebook_activation }}"

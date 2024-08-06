@@ -1,3 +1,5 @@
+# curl -H 'Content-Type: application/json' -d "{\"message\": \"reinstall project is cool\"}" eda.localnet.local:5004
+
 ---
 - name: Reinstall Project
   hosts: all
@@ -7,7 +9,7 @@
         port: 5002
   rules:
     - name: Say Hello
-      condition: event.payload.message == "Ansible workflow is cool"
+      condition: event.payload.message == "reinstall project is cool"
       action:
         run_workflow_template:
           name: Automation - Install HAPROXY and HTTPD
