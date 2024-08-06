@@ -1,0 +1,65 @@
+---
+- name: Create job HAPROXY Project
+  hosts: localhost
+  become: false
+  gather_facts: false
+
+  vars:
+    automation_controller_user: admin
+    automation_controller_pass: r3dh4t1!
+    automation_controller_host: controller01.localnet.local
+    automation_controller_job: 11
+    token_temp: HJQ3OaTPhCR32Zo5Hq27UiFB7vnJQN
+
+  tasks:
+    - name: Generate Controller token
+      ansible.builtin.uri:
+        url: "https://{{ automation_controller_host }}/api/v2/tokens/"
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Basic {{ (automation_controller_user + ':' + automation_controller_pass) | b64encode }}"
+        body:
+          description: "Personal Controller token created from playbook"
+        validate_certs: false
+      register: controller_token
+      failed_when: "controller_token.status not in [200, 201]"
+
+    - name: Launch a new Job
+      register: job_result
+      ansible.builtin.uri:
+        url: https://{{ automation_controller_host }}/api/v2/workflow_job_templates/{{ automation_controller_job }}/launch/
+        method: POST
+        validate_certs: false
+        return_content: true
+        status_code: 201
+        body:
+          # limit: vrbtclap00033.aap.rhbr-lab.com
+          # job_tags: common,apache
+          extra_vars:
+            debug: 1
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ controller_token.json.token }}"
+          # Authorization: "Bearer {{ token_temp }}"
+
+    - name: Set job_result
+      ansible.builtin.set_fact:
+        job_status: "{{ 'failed' if job_result.failed else job_result.json.status }}"
+
+    - name: Show job details for job_id
+      ansible.builtin.set_stats:
+        data:
+          resultado: {
+            "aap_status": "{{ job_result.status }}",
+            "job_name": "{{ job_result.json.name }}",
+            "job_started": "{{ job_result.json.started }}",
+            "job_finished": "{{ job_result.json.finished }}",
+            "job_status": "{{ job_result.json.status }}",
+            "job_id": "{{ job_result.json.id }}",
+            "job_extra_vars": "{{ job_result.json.extra_vars }}",
+            "job_job_tags": "{{ job_result.json.job_tags }}",
+            "job_modified": "{{ job_result.json.modified }}",
+          }

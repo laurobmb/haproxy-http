@@ -15,7 +15,8 @@
       chave: valor
     survey_enabled: false
     allow_simultaneous: false
-    ask_variables_on_launch: false
+    ask_variables_on_launch: true
+    ask_tags_on_launch: true
     inventory: haproxy_project_inventory
     limit:
     scm_branch:

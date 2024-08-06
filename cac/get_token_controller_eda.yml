@@ -6,8 +6,7 @@
     - name: Create a new token using username/password
       ansible.controller.token:
         description: 'Token de acesso para o EDA'
-        scope: "read"
-        # scope: "write"
+        scope: write
         state: present
         controller_username: admin
         controller_password: r3dh4t1!
