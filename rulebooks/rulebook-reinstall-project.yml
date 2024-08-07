@@ -1,4 +1,4 @@
-# curl -H 'Content-Type: application/json' -d "{\"message\": \"reinstall project is cool\"}" eda.localnet.local:5004
+# curl -H 'Content-Type: application/json' -d "{\"message\": \"reinstall project is cool\"}" eda.localnet.local:5002
 
 ---
 - name: Reinstall Project
