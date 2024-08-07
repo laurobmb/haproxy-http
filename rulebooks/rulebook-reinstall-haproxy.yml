@@ -8,7 +8,7 @@
         host: 0.0.0.0
         port: 5004
   rules:
-    - name: Say Hello 2
+    - name: Install HAPROXY
       condition: event.payload.message == "install haproxy is cool"
       action:
         run_job_template:

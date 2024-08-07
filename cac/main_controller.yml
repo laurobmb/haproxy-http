@@ -26,6 +26,12 @@
       organization: "{{ organization }}"
 
     project_hosts:
+      - name: web3.localnet.local
+        enabled: true
+        ipv4: 192.168.184.15
+        group: web_servers
+        inventory: "{{ project_inventory }}"
+
       - name: web2.localnet.local
         enabled: true
         ipv4: 192.168.184.13

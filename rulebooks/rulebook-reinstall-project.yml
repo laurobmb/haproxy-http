@@ -8,7 +8,7 @@
         host: 0.0.0.0
         port: 5002
   rules:
-    - name: Say Hello
+    - name: Reinstall Project
       condition: event.payload.message == "reinstall project is cool"
       action:
         run_workflow_template:
