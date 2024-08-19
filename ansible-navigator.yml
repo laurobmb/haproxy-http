@@ -11,7 +11,8 @@ ansible-navigator:
   execution-environment:
     container-engine: podman
     enabled: true
-    image: quay.io/lagomes/ee-cac-rhel9:v3
+    #    image: quay.io/lagomes/ee-cac-rhel9:v3
+    image: registry.redhat.io/ansible-automation-platform-24/de-minimal-rhel8:latest
     pull:
       policy: missing
   playbook-artifact:
