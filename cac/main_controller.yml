@@ -15,7 +15,7 @@
 
     description_project: "CaC install haproxy project"
     config_aap_estado: present
-    organization: Devops
+    organization: devops
     project_inventory: haproxy_project_inventory
 
     project_git:
