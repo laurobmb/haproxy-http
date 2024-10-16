@@ -1,7 +1,7 @@
-[haproxy]
-f39_temp_005 ansible_host=192.168.100.13
+[haproxys]
+haproxy.localnet.local ansible_host=192.168.184.14
 
-[httpd]
-rhel93_temp_001 ansible_host=192.168.100.19
-rhel93_temp_002 ansible_host=192.168.100.15
-temp_rhel93 ansible_host=192.168.100.18
+[web_servers]
+web1.localnet.local ansible_host=192.168.184.12
+web2.localnet.local ansible_host=192.168.184.13
+web3.localnet.local ansible_host=192.168.184.15

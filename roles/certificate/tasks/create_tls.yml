@@ -1,0 +1,35 @@
+---
+
+################################# TLS KEY ##########################################
+
+- name: Generate TLS Parameters with a different size (2048 bits)
+  ansible.builtin.command: openvpn --genkey --secret tls.key
+  args:
+    chdir: /tmp/
+  delegate_to: localhost
+
+- name: Copy TLS file from container to memory
+  ansible.builtin.slurp:
+    src: /tmp/tls.key
+  delegate_to: localhost
+  register: tls_slurp
+  run_once: true
+
+- name: Write TLS key file file on server
+  ansible.builtin.copy:
+    dest: "{{ dest_diretorio }}/tls.key"
+    content: "{{ (tls_slurp.content | b64decode) }}"
+    mode: '0644'
+
+- name: Copy TLS file from server to memory
+  ansible.builtin.slurp:
+    src: "{{ dest_diretorio }}/tls.key"
+  register: tls_slurp
+  run_once: true
+
+- name: Write TLS key file file on localhost
+  ansible.builtin.copy:
+    dest: "/tmp/tls.key"
+    content: "{{ (tls_slurp.content | b64decode) }}"
+    mode: '0644'
+  delegate_to: localhost

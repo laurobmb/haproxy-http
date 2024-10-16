@@ -1,0 +1,39 @@
+- name: Instalar Apache e mod_ssl
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ __apache_packages }}"
+
+- name: Criar DocumentRoot para cada domínio
+  ansible.builtin.file:
+    path: "{{ apache_web_root }}/{{ item.domain }}"
+    state: directory
+    mode: '0755'
+  with_items: "{{ domains }}"
+
+- name: Criar página web simples em cada DocumentRoot
+  ansible.builtin.copy:
+    dest: "{{ apache_web_root }}/{{ item.domain }}/index.html"
+    content: "<html><body><h1>Bem-vindo a {{ item.domain }}</h1></body></html>"
+    owner: apache
+    group: apache
+    mode: '0644'
+  with_items: "{{ domains }}"
+
+- name: Configurar VirtualHost com HTTPS para cada domínio
+  ansible.builtin.template:
+    src: virtualhost_ssl.j2
+    dest: "{{ apache_config_dir }}/{{ item.domain }}.conf"
+    owner: apache
+    group: apache
+    mode: '0644'
+  with_items: "{{ domains }}"
+  notify:
+    - restart httpd
+
+- name: Garantir que o Apache esteja habilitado e rodando
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: true
+

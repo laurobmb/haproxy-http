@@ -1,0 +1,14 @@
+---
+- name: Catch files on localhost
+  ansible.builtin.import_tasks: catch_files_localhost.yml
+
+- name: DEBUG files
+  ansible.builtin.shell: ls -lh /tmp/
+  delegate_to: localhost
+  register: check_files
+  changed_when: check_files.rc != 0 # <- Uses the return c
+
+- name: DEBUG
+  ansible.builtin.debug:
+    msg: "{{ check_files }}"
+

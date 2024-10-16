@@ -1,0 +1,125 @@
+---
+############## Copia o certificado e chave da ca para o container caso a ca nao tenha sido criada no container 
+- name: Copy ca.key and ca.pem from server
+  ansible.builtin.slurp:
+    src: "{{ item }}"
+  loop:
+    - "{{ dest_diretorio }}/ca.pem"
+    - "{{ dest_diretorio }}/ca.key"
+  register: ca_new_slurp
+  run_once: true
+  when: ca_key_exists_on_server.stat.exists is true
+
+# - name: DEBUG
+#   ansible.builtin.debug:
+#     msg: "{{ item.content }}"
+#   loop: "{{ ca_new_slurp.results }}"
+#   delegate_to: localhost
+#   run_once: true
+#   when: ca_key_exists_on_server.stat.exists is true
+
+- name: Write key file fica.key and ca.pem on localhost
+  ansible.builtin.copy:
+    dest: "/tmp/{{ item.source | basename }}"
+    content: "{{ (item.content | b64decode) }}"
+    mode: '0644'
+  loop: "{{ ca_new_slurp.results }}"
+  delegate_to: localhost
+  when: ca_key_exists_on_server.stat.exists is true
+
+########################## Use the CA to sign a certificate ##########################
+- name: Create private key for new certificate on localhost
+  community.crypto.openssl_privatekey:
+    path: /tmp/{{ item.0 }}.key
+  delegate_to: localhost
+  with_together:
+    - "{{ domains }}"
+  run_once: true
+
+- name: Create certificate signing request (CSR) for new certificate
+  community.crypto.openssl_csr_pipe:
+    privatekey_path: /tmp/{{ item.0 }}.key
+    common_name: "{{ item.0 }}"
+    country_name: BR
+    state_or_province_name: Pernambuco
+    locality_name: Recife
+    organization_name: Redhat
+    organizational_unit_name: Consulting
+    email_address: lagomes@redhat.com
+    subject_alt_name:
+      - "DNS:ansible.com"
+      - "DNS:www.ansible.com"
+      - "DNS:docs.ansible.com"
+  delegate_to: localhost
+  with_together:
+    - "{{ domains }}"
+  register: csr
+  run_once: true
+
+- name: Sign certificate with our CA
+  community.crypto.x509_certificate_pipe:
+#    content: "{{ (item.0.content | b64decode) if item.1.stat.exists else omit }}"
+    csr_content: "{{ item.0.csr }}"
+    provider: ownca
+    ownca_path: /tmp/ca.pem
+    ownca_privatekey_path: /tmp/ca.key
+    ownca_privatekey_passphrase: "{{ secret_ca_passphrase }}"
+    ownca_not_after: +365d  # valid for one year
+    ownca_not_before: "-1d"  # valid since yesterday
+  delegate_to: localhost
+  with_together:
+    - "{{ csr.results }}"
+  register: certificate
+  run_once: true
+
+- name: Write certificate file on localhost
+  ansible.builtin.copy:
+    dest: "{{ dest_diretorio }}/{{ item.0 }}.pem"
+    content: "{{ item.1.certificate }}"
+    mode: '0644'
+  with_together:
+    - "{{ domains }}"
+    - "{{ certificate.results }}"
+
+########################## COPIANDO KEY FILE PARA HOST ##########################
+
+- name: Check whether key file exists
+  ansible.builtin.stat:
+    path: /tmp/{{ item.0 }}.key
+  delegate_to: localhost
+  with_together:
+    - "{{ domains }}"
+  register: key_exists
+  run_once: true
+
+- name: Read existing key file if exists
+  ansible.builtin.slurp:
+    src: /tmp/{{ item.0 }}.key
+  delegate_to: localhost
+  with_together:
+    - "{{ domains }}"
+    - "{{ key_exists.results }}"
+  register: keys_slurp
+  run_once: true
+
+- name: Write key file file on server
+  ansible.builtin.copy:
+    dest: "{{ dest_diretorio }}/{{ item.0 }}.key"
+    content: "{{ (item.2.content | b64decode) }}"
+    mode: '0644'
+  with_together:
+    - "{{ domains }}"
+    - "{{ key_exists.results }}"
+    - "{{ keys_slurp.results }}"
+
+- name: Write sever file file on localhost
+  ansible.builtin.copy:
+    dest: "/tmp/{{ item.0 }}.pem"
+    content: "{{ (item.1.certificate) }}"
+    mode: '0644'
+  delegate_to: localhost
+  with_together:
+    - "{{ domains }}"
+    - "{{ certificate.results }}"
+    - "{{ key_exists.results }}"
+

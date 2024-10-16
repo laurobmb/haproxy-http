@@ -1,24 +1,24 @@
 ---
 # tasks file for haproxy
-- name: install haproxy
+- name: Install haproxy
   ansible.builtin.yum:
     name: haproxy
     state: present
   notify: restart haproxy
 
-- name: install keepalived
+- name: Install keepalived
   ansible.builtin.yum:
     name: keepalived
     state: present
   notify: restart keepalived
 
-- name: copy keepalived
+- name: Copy keepalived
   ansible.builtin.template:
     src: keepalived.conf.j2
     dest: /etc/keepalived/keepalived.conf
   notify: restart keepalived
 
-- name: copy haproxy.cfg
+- name: Copy haproxy.cfg
   ansible.builtin.template:
     src: haproxy.cfg-2.j2
     dest: /etc/haproxy/haproxy.cfg
@@ -26,22 +26,25 @@
 
 - name: Allow firewalld
   ansible.posix.firewalld:
-    service: "{{item}}"
-    permanent: yes
+    service: "{{ item }}"
+    permanent: true
     state: enabled
     zone: public
-    immediate: yes
+    immediate: true
   loop:
-  - https
-  - http
+    - https
+    - http
 
 - name: Allow firewalld to stats
   ansible.posix.firewalld:
-    port: 9000/tcp
-    permanent: yes
+    port: "{{ item }}"
+    permanent: true
     state: enabled
     zone: public
-    immediate: yes
+    immediate: true
+  loop:
+    - 9000/tcp
+    - 22222/tcp
 
 - name: Adicionar porta TCPs
   community.general.seport:
@@ -52,6 +55,21 @@
   loop:
     - 6443
     - 22623
+    - 22222
+
+- name: Create error files
+  ansible.builtin.file:
+    dest: "{{ item }}"
+    state: touch
+    mode: '0644'
+  loop:
+    - /etc/haproxy/errors/400.http
+    - /etc/haproxy/errors/403.http
+    - /etc/haproxy/errors/408.http
+    - /etc/haproxy/errors/500.http
+    - /etc/haproxy/errors/502.http
+    - /etc/haproxy/errors/503.http
+    - /etc/haproxy/errors/504.http
 
 - name: restart haproxy and ensure enable
   ansible.builtin.systemd:

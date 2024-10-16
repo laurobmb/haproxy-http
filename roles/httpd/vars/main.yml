@@ -5,3 +5,14 @@ __apache_packages:
   - httpd-devel
   - mod_ssl
   - openssh
+
+domains:
+  - { domain: techtalk.redhat.localnet.local, port: 443}
+  - { domain: haproxy.redhat.localnet.local, port: 443}
+  - { domain: web1.redhat.localnet.local, port: 443}
+  - { domain: web2.redhat.localnet.local, port: 443}
+  - { domain: web3.redhat.localnet.local, port: 443}
+
+apache_config_dir: "/etc/httpd/conf.d"
+apache_web_root: "/var/www"
+ssl_cert_dir: "/etc/ssl/certificates"

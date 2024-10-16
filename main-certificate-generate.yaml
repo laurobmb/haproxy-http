@@ -1,0 +1,16 @@
+---
+- name: Register maquinas
+  hosts: web_servers,haproxys
+  gather_facts: false
+  vars:
+    dest_diretorio: /etc/ssl/certificates/
+    secret_ca_passphrase: 1q2w3e
+    domains:
+      - techtalk.redhat.localnet.local
+      - haproxy.redhat.localnet.local
+      - web1.redhat.localnet.local
+      - web2.redhat.localnet.local
+      - web3.redhat.localnet.local
+  roles:
+    - role: certificate
+      tags: certificate

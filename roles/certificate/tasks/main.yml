@@ -1,0 +1,24 @@
+---
+
+- name: Create directorys
+  ansible.builtin.file:
+    dest: "{{ dest_diretorio }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create TLS from server
+  ansible.builtin.import_tasks: create_tls.yml
+
+- name: Create CA
+  ansible.builtin.import_tasks: create_ca.yml
+
+- name: Create server
+  ansible.builtin.import_tasks: create_server.yml
+
+- name: Create client certificates
+  ansible.builtin.import_tasks: create_clients.yml
+
+- name: Create files
+  ansible.builtin.import_tasks: create_files.yml
