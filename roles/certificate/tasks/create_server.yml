@@ -56,16 +56,16 @@
 #   ansible.builtin.debug:
 #     msg: "{{ server_certificate_exists }}"
 
-- name: Read existing server's certificate if exists
-  ansible.builtin.slurp:
-    src: /tmp/server.pem
-  delegate_to: localhost
-  register: server_certificate
-  run_once: true
+# - name: Read existing server's certificate if exists
+#   ansible.builtin.slurp:
+#     src: /tmp/server.pem
+#   delegate_to: localhost
+#   register: server_certificate
+#   run_once: true
 
 - name: Sign certificate with our CA
   community.crypto.x509_certificate_pipe:
-    content: "{{ (server_certificate.content | b64decode) if server_certificate_exists.stat.exists else omit }}"
+#    content: "{{ (server_certificate.content | b64decode) if server_certificate_exists.stat.exists else omit }}"
     csr_content: "{{ csr.csr }}"
     provider: ownca
     ownca_path: /tmp/ca.pem
