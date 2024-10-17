@@ -14,3 +14,7 @@
   roles:
     - role: certificate
       tags: certificate
+
+    - role: certificate_check
+      tags: certificate_check
+
