@@ -1,10 +1,10 @@
 ---
-- name: Catch tls.key file on localhost
-  ansible.builtin.slurp:
-    src: "/tmp/tls.key"
-  register: tls_certificate_on_localhost
-  run_once: true
-  delegate_to: localhost
+# - name: Catch tls.key file on localhost
+#   ansible.builtin.slurp:
+#     src: "/tmp/tls.key"
+#   register: tls_certificate_on_localhost
+#   run_once: true
+#   delegate_to: localhost
 
 - name: Catch server certificate file on localhost
   ansible.builtin.slurp:
