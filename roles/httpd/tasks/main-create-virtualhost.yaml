@@ -14,7 +14,8 @@
 - name: Criar página web simples em cada DocumentRoot
   ansible.builtin.copy:
     dest: "{{ apache_web_root }}/{{ item.domain }}/index.html"
-    content: "<html><body><h1>Bem-vindo a {{ item.domain }}</h1></body></html>"
+    src: index-example-001.html
+    # src: index-example-002.html
     owner: apache
     group: apache
     mode: '0644'

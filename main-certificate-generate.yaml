@@ -1,6 +1,6 @@
 ---
 - name: Register maquinas
-  hosts: web_servers,haproxys
+  hosts: web_servers
   gather_facts: false
   vars:
     dest_diretorio: /etc/ssl/certificates/

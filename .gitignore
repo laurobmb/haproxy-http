@@ -4,3 +4,4 @@ cac/logs/ansible-navigator.log
 
 artifacts/*
 logs/ansible-navigator.log
+artifacts/ansible_artifact.jsonl
