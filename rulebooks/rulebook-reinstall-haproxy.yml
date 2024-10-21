@@ -12,5 +12,5 @@
       condition: event.payload.message == "install haproxy is cool"
       action:
         run_job_template:
-          name: main-haproxy
+          name: Haproxy - main-haproxy
           organization: devops

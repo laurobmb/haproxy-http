@@ -18,7 +18,7 @@
           - event.url_check.status_code != 200
       action:
         run_job_template:
-          name: main-http
+          name: Haproxy - main-haproxy
           organization: devops
 #          job_args:
 #            extra_vars:

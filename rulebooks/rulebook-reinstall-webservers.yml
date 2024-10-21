@@ -18,5 +18,5 @@
       condition: event.payload.message == "install webservers is cool"
       action:
         run_job_template:
-          name: main-http
+          name: Haproxy - main-http
           organization: devops
