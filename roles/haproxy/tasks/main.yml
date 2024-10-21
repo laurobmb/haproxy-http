@@ -57,6 +57,12 @@
     - 22623
     - 22222
 
+- name: Create error files directory
+  ansible.builtin.file:
+    dest: "/etc/haproxy/errors/"
+    state: directory
+    mode: '0644'
+
 - name: Create error files
   ansible.builtin.file:
     dest: "{{ item }}"
