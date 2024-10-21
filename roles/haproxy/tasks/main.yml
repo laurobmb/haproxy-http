@@ -16,12 +16,14 @@
   ansible.builtin.template:
     src: keepalived.conf.j2
     dest: /etc/keepalived/keepalived.conf
+    mode: '0644'
   notify: restart keepalived
 
 - name: Copy haproxy.cfg
   ansible.builtin.template:
     src: haproxy.cfg-2.j2
     dest: /etc/haproxy/haproxy.cfg
+    mode: '0644'
   notify: restart haproxy
 
 - name: Allow firewalld
@@ -77,7 +79,7 @@
     - /etc/haproxy/errors/503.http
     - /etc/haproxy/errors/504.http
 
-- name: restart haproxy and ensure enable
+- name: Restart haproxy and ensure enable
   ansible.builtin.systemd:
     name: haproxy
     state: restarted
