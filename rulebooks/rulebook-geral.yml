@@ -1,0 +1,30 @@
+# curl -H 'Content-Type: application/json' -d "{\"message\": \"install webservers is cool\"}" eda.localnet.local:5003
+
+---
+- name: Install WebServers
+  hosts: all
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+  rules:
+    - name: Install HAPROXY
+      condition: event.payload.message == "install haproxy is cool"
+      action:
+        run_job_template:
+          name: Haproxy - main-haproxy
+          organization: devops
+
+    - name: Reinstall Project
+      condition: event.payload.message == "reinstall project is cool"
+      action:
+        run_workflow_template:
+          name: Automation - Install HAPROXY and HTTPD
+          organization: devops
+
+    - name: Install WebServers
+      condition: event.payload.message == "install webservers is cool"
+      action:
+        run_job_template:
+          name: Haproxy - main-http
+          organization: devops
